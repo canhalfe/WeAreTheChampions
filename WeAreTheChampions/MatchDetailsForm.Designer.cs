@@ -29,7 +29,6 @@ namespace WeAreTheChampions
         /// </summary>
         private void InitializeComponent()
         {
-            this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -57,16 +56,6 @@ namespace WeAreTheChampions
             ((System.ComponentModel.ISupportInitialize)(this.nudScore2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudScore1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label13
-            // 
-            this.label13.BackColor = System.Drawing.Color.Navy;
-            this.label13.ForeColor = System.Drawing.Color.Navy;
-            this.label13.Location = new System.Drawing.Point(16, 259);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(22, 20);
-            this.label13.TabIndex = 47;
-            this.label13.Text = "     ";
             // 
             // label12
             // 
@@ -297,7 +286,6 @@ namespace WeAreTheChampions
             this.ClientSize = new System.Drawing.Size(539, 399);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -332,8 +320,6 @@ namespace WeAreTheChampions
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;

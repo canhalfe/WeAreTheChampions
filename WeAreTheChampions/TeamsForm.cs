@@ -22,29 +22,6 @@ namespace WeAreTheChampions
             ListTeams();
         }
 
-        private void TeamColorShow()
-        {
-            var team = (Team)lstTeams.SelectedItem;
-            List<Model.Color> renkler = team.TeamColors.ToList();
-
-            if (renkler.Count == 0)
-            {
-                lblBg.BackColor = lblBg2.BackColor = lblColorFirst.BackColor = lblColorSecond.BackColor = System.Drawing.Color.Transparent;
-                return;
-            }
-            if (renkler.Count == 1)
-            {
-                lblBg.BackColor = System.Drawing.Color.FromArgb(renkler[0].Red, renkler[0].Green, renkler[0].Blue);
-                lblColorFirst.BackColor = System.Drawing.Color.FromArgb(renkler[0].Red, renkler[0].Green, renkler[0].Blue);
-                return;
-            }
-            if (renkler.Count == 2)
-            {
-                lblColorFirst.BackColor = lblBg.BackColor = System.Drawing.Color.FromArgb(renkler[0].Red, renkler[0].Green, renkler[0].Blue);
-                lblColorSecond.BackColor = lblBg2.BackColor = System.Drawing.Color.FromArgb(renkler[1].Red, renkler[1].Green, renkler[1].Blue);
-            }
-        }
-
         protected virtual void WhenMakeChange(EventArgs args)
         {
             HasBeenChanged?.Invoke(this, args);
@@ -57,17 +34,9 @@ namespace WeAreTheChampions
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var renk = CreateColor(lblColorFirst);
-            var renk2 = CreateColor(lblColorSecond);
-
             if (btnAdd.Text == "💾 Save")
             {
                 var selectedTeam = (Team)lstTeams.SelectedItem;
-
-                List<Model.Color> renklerEdit = new List<Model.Color>();
-                renklerEdit.Add(renk);
-                renklerEdit.Add(renk2);
-                selectedTeam.TeamColors = renklerEdit;
                 selectedTeam.TeamName = txtTeamName.Text;
                 db.SaveChanges();
                 ListTeams();
@@ -75,23 +44,12 @@ namespace WeAreTheChampions
                 WhenMakeChange(EventArgs.Empty);
                 return;
             }
-            List<Model.Color> renkler = new List<Model.Color>();
-            renkler.Add(renk);
-            renkler.Add(renk2);
-            db.Teams.Add(new Team { TeamName = txtTeamName.Text, TeamColors = renkler });
+            
+            db.Teams.Add(new Team() { TeamName = txtTeamName.Text});
             db.SaveChanges();
             ListTeams();
+            ResetForm();
             WhenMakeChange(EventArgs.Empty);
-        }
-
-        private Model.Color CreateColor(Label lbl)
-        {
-            System.Drawing.Color firstlblcolor = lbl.BackColor;
-            byte r = firstlblcolor.R;
-            byte g = firstlblcolor.G;
-            byte b = firstlblcolor.B;
-            var renk = new Model.Color() { Red = r, Green = g, Blue = b };
-            return renk;
         }
 
         private void ResetForm()
@@ -105,8 +63,14 @@ namespace WeAreTheChampions
         {
             if (lstTeams.SelectedIndex < 0)
                 return;
+
             var selectedTeam = (Team)lstTeams.SelectedItem;
-            if (selectedTeam.Players != null || selectedTeam.Team1Matches != null || selectedTeam.Team2Matches != null)
+            if (selectedTeam.TeamName.Contains("(Closed)"))
+            {
+                MessageBox.Show("Selected Team already closed");
+                return;
+            }
+            if (selectedTeam.Players.Count != 0 || selectedTeam.Team1Matches != null || selectedTeam.Team2Matches != null)
             {
                 selectedTeam.TeamName = selectedTeam.TeamName + "(Closed)";
                 if (selectedTeam.Players.Count != 0)
@@ -128,35 +92,19 @@ namespace WeAreTheChampions
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (lstTeams.SelectedIndex < 0)
-            {
-                return;
-            }
+            if (lstTeams.SelectedIndex < 0) return;
+            //Edit Mode Activated
             lstTeams.Enabled = false;
             var selectedTeam = (Team)lstTeams.SelectedItem;
+            List<Model.Color> colors = selectedTeam.TeamColors.ToList();
+          
             btnAdd.Text = "💾 Save";
             txtTeamName.Text = selectedTeam.TeamName;
         }
-
-        private void lblColorFirst_Click(object sender, EventArgs e)
-        {
-            if (colorDialogFirst.ShowDialog() == DialogResult.OK)
-            {
-                lblColorFirst.BackColor = colorDialogFirst.Color;
-            }
-        }
-
+        
         private void lstTeams_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TeamColorShow();
-        }
-
-        private void lblColorSecond_Click(object sender, EventArgs e)
-        {
-            if (colorDialogSecond.ShowDialog() == DialogResult.OK)
-            {
-                lblColorSecond.BackColor = colorDialogSecond.Color;
-            }
+            
         }
     }
 }

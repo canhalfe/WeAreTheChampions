@@ -129,5 +129,11 @@ namespace WeAreTheChampions
             var frmPlayersForm = new PlayerForm(db);
             frmPlayersForm.ShowDialog();
         }
+
+        private void colorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frmcolorsForm = new ColorsForm(db);
+            frmcolorsForm.ShowDialog();
+        }
     }
 }

@@ -99,6 +99,9 @@
     <Compile Include="TeamsForm.Designer.cs">
       <DependentUpon>TeamsForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ColorsForm.resx">
+      <DependentUpon>ColorsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
