@@ -42,6 +42,13 @@ namespace WeAreTheChampions
             this.colorDialogSecond = new System.Windows.Forms.ColorDialog();
             this.lblBg = new System.Windows.Forms.Label();
             this.lblBg2 = new System.Windows.Forms.Label();
+            this.cboFirstColor = new System.Windows.Forms.ComboBox();
+            this.cboSecondColor = new System.Windows.Forms.ComboBox();
+            this.lbl = new System.Windows.Forms.Label();
+            this.lbl2 = new System.Windows.Forms.Label();
+            this.lblFirstColor = new System.Windows.Forms.Label();
+            this.lblSecondColor = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lstTeams
@@ -74,7 +81,7 @@ namespace WeAreTheChampions
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label1.ForeColor = System.Drawing.Color.Maroon;
-            this.label1.Location = new System.Drawing.Point(11, 23);
+            this.label1.Location = new System.Drawing.Point(11, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 17);
             this.label1.TabIndex = 2;
@@ -103,6 +110,7 @@ namespace WeAreTheChampions
             this.btnListPlayers.TabIndex = 5;
             this.btnListPlayers.Text = "📜 List Players";
             this.btnListPlayers.UseVisualStyleBackColor = false;
+            this.btnListPlayers.Click += new System.EventHandler(this.btnListPlayers_Click);
             // 
             // label3
             // 
@@ -189,12 +197,79 @@ namespace WeAreTheChampions
             this.lblBg2.Size = new System.Drawing.Size(278, 12);
             this.lblBg2.TabIndex = 13;
             // 
+            // cboFirstColor
+            // 
+            this.cboFirstColor.DisplayMember = "ColorName";
+            this.cboFirstColor.FormattingEnabled = true;
+            this.cboFirstColor.Location = new System.Drawing.Point(105, 123);
+            this.cboFirstColor.Name = "cboFirstColor";
+            this.cboFirstColor.Size = new System.Drawing.Size(121, 23);
+            this.cboFirstColor.TabIndex = 14;
+            this.cboFirstColor.SelectedIndexChanged += new System.EventHandler(this.cboFirstColor_SelectedIndexChanged);
+            // 
+            // cboSecondColor
+            // 
+            this.cboSecondColor.DisplayMember = "ColorName";
+            this.cboSecondColor.FormattingEnabled = true;
+            this.cboSecondColor.Location = new System.Drawing.Point(105, 153);
+            this.cboSecondColor.Name = "cboSecondColor";
+            this.cboSecondColor.Size = new System.Drawing.Size(121, 23);
+            this.cboSecondColor.TabIndex = 15;
+            this.cboSecondColor.SelectedIndexChanged += new System.EventHandler(this.cboSecondColor_SelectedIndexChanged);
+            // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Location = new System.Drawing.Point(15, 126);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(62, 15);
+            this.lbl.TabIndex = 16;
+            this.lbl.Text = "First Color";
+            // 
+            // lbl2
+            // 
+            this.lbl2.AutoSize = true;
+            this.lbl2.Location = new System.Drawing.Point(15, 156);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(81, 15);
+            this.lbl2.TabIndex = 17;
+            this.lbl2.Text = "Second Color";
+            // 
+            // lblFirstColor
+            // 
+            this.lblFirstColor.Location = new System.Drawing.Point(233, 123);
+            this.lblFirstColor.Name = "lblFirstColor";
+            this.lblFirstColor.Size = new System.Drawing.Size(36, 23);
+            this.lblFirstColor.TabIndex = 18;
+            // 
+            // lblSecondColor
+            // 
+            this.lblSecondColor.Location = new System.Drawing.Point(233, 153);
+            this.lblSecondColor.Name = "lblSecondColor";
+            this.lblSecondColor.Size = new System.Drawing.Size(36, 23);
+            this.lblSecondColor.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(5, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(275, 13);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "-------------------------------------------------------------------";
+            // 
             // frmTeamsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(281, 599);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lblSecondColor);
+            this.Controls.Add(this.lblFirstColor);
+            this.Controls.Add(this.lbl2);
+            this.Controls.Add(this.lbl);
+            this.Controls.Add(this.cboSecondColor);
+            this.Controls.Add(this.cboFirstColor);
             this.Controls.Add(this.lblBg2);
             this.Controls.Add(this.lblBg);
             this.Controls.Add(this.btnAdd);
@@ -230,5 +305,12 @@ namespace WeAreTheChampions
         private System.Windows.Forms.ColorDialog colorDialogSecond;
         private System.Windows.Forms.Label lblBg;
         private System.Windows.Forms.Label lblBg2;
+        private System.Windows.Forms.ComboBox cboFirstColor;
+        private System.Windows.Forms.ComboBox cboSecondColor;
+        private System.Windows.Forms.Label lbl;
+        private System.Windows.Forms.Label lbl2;
+        private System.Windows.Forms.Label lblFirstColor;
+        private System.Windows.Forms.Label lblSecondColor;
+        private System.Windows.Forms.Label label4;
     }
 }

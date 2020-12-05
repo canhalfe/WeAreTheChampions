@@ -158,11 +158,11 @@ namespace WeAreTheChampions
             // 
             // lblColor
             // 
+            this.lblColor.BackColor = System.Drawing.Color.Black;
             this.lblColor.Location = new System.Drawing.Point(19, 56);
             this.lblColor.Name = "lblColor";
             this.lblColor.Size = new System.Drawing.Size(371, 17);
             this.lblColor.TabIndex = 11;
-            this.lblColor.Text = "Color Label";
             // 
             // label4
             // 

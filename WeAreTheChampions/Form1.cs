@@ -126,7 +126,8 @@ namespace WeAreTheChampions
 
         private void playersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frmPlayersForm = new PlayerForm(db);
+            var teamId = 0;
+            var frmPlayersForm = new PlayerForm(db,teamId);
             frmPlayersForm.ShowDialog();
         }
 

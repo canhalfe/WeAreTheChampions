@@ -188,6 +188,7 @@ namespace WeAreTheChampions
             this.Controls.Add(this.lstPlayers);
             this.Controls.Add(this.cboPlayersTeam);
             this.Name = "PlayerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PlayerForm";
             this.ResumeLayout(false);
             this.PerformLayout();

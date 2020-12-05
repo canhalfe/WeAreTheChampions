@@ -14,8 +14,10 @@ namespace WeAreTheChampions
     public partial class PlayerForm : Form
     {
         private readonly WeAreTheChampionsContext db;
-        public PlayerForm(WeAreTheChampionsContext db)
+        private readonly int teamId;
+        public PlayerForm(WeAreTheChampionsContext db, int teamId)
         {
+            this.teamId = teamId;
             this.db = db;
             InitializeComponent();
             ListPlayersTeam();
@@ -40,6 +42,10 @@ namespace WeAreTheChampions
 
         private void ListPlayers()
         {
+            if (teamId != 0)
+            {
+                var team = db.Teams.ToList().Find(x => x.Id == teamId);
+            }
             var selectedTeam = (Team)cboTeams.SelectedItem;
             var selectedTeamId = selectedTeam.Id;
             if (cboTeams.SelectedIndex == 0)

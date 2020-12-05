@@ -37,6 +37,11 @@ namespace WeAreTheChampions
             {
                 var selectedColor = (Model.Color)lstColors.SelectedItem;
                 selectedColor.ColorName = txtColorName.Text;
+                if (db.Colors.Any(x => x.ColorName == selectedColor.ColorName))
+                {
+                    MessageBox.Show("Please enter a different color name.");
+                    return;
+                };
                 selectedColor.Red = Convert.ToByte(lblRed.Text);
                 selectedColor.Green = Convert.ToByte(lblGreen.Text);
                 selectedColor.Blue = Convert.ToByte(lblBlue.Text);
@@ -120,7 +125,6 @@ namespace WeAreTheChampions
             if (lstColors.SelectedIndex == 0)
             {
                 lblPreview.BackColor = System.Drawing.Color.Transparent;
-                return;
             }
             if (lstColors.SelectedIndex < 0)
             {
