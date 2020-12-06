@@ -37,26 +37,50 @@ namespace WeAreTheChampions
 
         private void ListTeams()
         {
-            lstTeams.DataSource = db.Teams.ToList();
+            lstTeams.DataSource = db.Teams.ToList().Where(x => !x.TeamName.Contains("Closed")).ToList();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (txtTeamName.Text == "")
+            {
+                MessageBox.Show("Please enter a team name!");
+            }
+            var color1 = (Model.Color)cboFirstColor.SelectedItem;
+            var color2 = (Model.Color)cboSecondColor.SelectedItem;
+            if (color1 == null || color2 == null)
+            {
+                MessageBox.Show("Please choose colors.");
+                return;
+            }
             List<Model.Color> colors = new List<Model.Color>();
-            colors.Add((Model.Color)cboFirstColor.SelectedItem);
-            colors.Add((Model.Color)cboSecondColor.SelectedItem);
+            colors.Add(color1);
+            colors.Add(color2);
+
+            var teamName = txtTeamName.Text.UppercaseFirst();
             if (btnAdd.Text == "💾 Save")
             {
                 var selectedTeam = (Team)lstTeams.SelectedItem;
+                if (db.Teams.ToList().Any(x => x.TeamName.ToLower() == teamName.ToLower().Replace(" ","")
+                        && selectedTeam.TeamName.ToLower() != teamName.ToLower().Replace(" ", "")))
+                {
+                    MessageBox.Show("There is already a team with this team name!");
+                    return;
+                }
+                selectedTeam.TeamName = teamName;
                 selectedTeam.TeamColors = colors;
-                selectedTeam.TeamName = txtTeamName.Text;
                 db.SaveChanges();
                 ListTeams();
                 ResetForm();
                 WhenMakeChange(EventArgs.Empty);
                 return;
             }
-            db.Teams.Add(new Team() { TeamName = txtTeamName.Text});
+            if (db.Teams.ToList().Any(x => x.TeamName.ToLower() == teamName.ToLower().Replace(" ", "")))
+            {
+                MessageBox.Show("There is already a team with this team name!");
+                return;
+            }
+            db.Teams.Add(new Team() { TeamName = teamName, TeamColors = colors });
             db.SaveChanges();
             ListTeams();
             ResetForm();
@@ -65,9 +89,13 @@ namespace WeAreTheChampions
 
         private void ResetForm()
         {
+            btnEdit.Text = "🖋 Edit";
+            btnEdit.BackColor = System.Drawing.Color.Black;
             lstTeams.Enabled = true;
             btnAdd.Text = "+ Add";
             txtTeamName.Clear();
+            lblFirstColor.BackColor = lblSecondColor.BackColor = System.Drawing.Color.Transparent;
+            cboSecondColor.SelectedIndex = cboFirstColor.SelectedIndex = -1;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -78,7 +106,7 @@ namespace WeAreTheChampions
             var selectedTeam = (Team)lstTeams.SelectedItem;
             if (selectedTeam.TeamName.Contains("(Closed)"))
             {
-                MessageBox.Show("Selected Team already closed");
+                MessageBox.Show("Selected team is already closed");
                 return;
             }
             if (selectedTeam.Players.Count != 0 || selectedTeam.Team1Matches != null || selectedTeam.Team2Matches != null)
@@ -103,14 +131,33 @@ namespace WeAreTheChampions
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            if (btnEdit.Text == "Cancel")
+            {
+                ResetForm();
+                return;
+            }
+            btnEdit.Text = "Cancel";
+            btnEdit.BackColor = System.Drawing.Color.Navy;
             if (lstTeams.SelectedIndex < 0) return;
-            //Edit Mode Activated
             lstTeams.Enabled = false;
             var selectedTeam = (Team)lstTeams.SelectedItem;
-            List<Model.Color> colors = selectedTeam.TeamColors.ToList();
+            //List<Model.Color> colors = selectedTeam.TeamColors.ToList();
           
             btnAdd.Text = "💾 Save";
             txtTeamName.Text = selectedTeam.TeamName;
+
+            #region Edite Basılınca Renk isimleri cbo'lara gelsin
+            var renkler = selectedTeam.TeamColors.ToList();
+            if (renkler.Count == 1)
+            {
+                cboFirstColor.SelectedItem = renkler[0];
+            }
+            else if (renkler.Count == 2)
+            {
+                cboFirstColor.SelectedItem = renkler[0];
+                cboSecondColor.SelectedItem = renkler[1];
+            }
+            #endregion
         }
 
         private void cboFirstColor_SelectedIndexChanged(object sender, EventArgs e)

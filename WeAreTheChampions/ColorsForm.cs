@@ -25,9 +25,10 @@ namespace WeAreTheChampions
         {
             lstColors.DataSource = db.Colors.ToList();
         }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var colorName = txtColorName.Text.Trim();
+            var colorName = txtColorName.Text.UppercaseFirst().Trim();
             if (colorName == "")
             {
                 MessageBox.Show("Please enter a color name");
@@ -37,11 +38,13 @@ namespace WeAreTheChampions
             {
                 var selectedColor = (Model.Color)lstColors.SelectedItem;
                 selectedColor.ColorName = txtColorName.Text;
-                if (db.Colors.Any(x => x.ColorName == selectedColor.ColorName))
+                if (db.Colors.Any(x => x.ColorName == selectedColor.ColorName) 
+                    && selectedColor.ColorName != txtColorName.Text.UppercaseFirst())
                 {
-                    MessageBox.Show("Please enter a different color name.");
+                    MessageBox.Show("Color name is already exist. Please enter a different color name.");
                     return;
                 };
+                selectedColor.ColorName = txtColorName.Text.UppercaseFirst();
                 selectedColor.Red = Convert.ToByte(lblRed.Text);
                 selectedColor.Green = Convert.ToByte(lblGreen.Text);
                 selectedColor.Blue = Convert.ToByte(lblBlue.Text);
@@ -52,14 +55,14 @@ namespace WeAreTheChampions
             }
             var color = new Model.Color 
             { 
-                ColorName = txtColorName.Text, 
+                ColorName = txtColorName.Text.UppercaseFirst(), 
                 Red = Convert.ToByte(lblRed.Text), 
                 Green = Convert.ToByte(lblGreen.Text), 
                 Blue = Convert.ToByte(lblBlue.Text) 
             };
             if (db.Colors.Any(x => x.ColorName == color.ColorName))
             {
-                MessageBox.Show("Please enter a different color name.");
+                MessageBox.Show("Color name is already exist. Please enter a different color name.");
                 return;
             } ;
             db.Colors.Add(color);

@@ -14,7 +14,7 @@ namespace WeAreTheChampions
     public partial class PlayerForm : Form
     {
         private readonly WeAreTheChampionsContext db;
-        private readonly int teamId;
+        private int teamId;
         public PlayerForm(WeAreTheChampionsContext db, int teamId)
         {
             this.teamId = teamId;
@@ -28,7 +28,7 @@ namespace WeAreTheChampions
         {
             var teams = db.Teams.ToList().Where(x => !x.TeamName.Contains("(Closed)")).ToList();
             teams.Insert(0, new Team { TeamName = "Select Team" });
-            teams.Add(new Team { TeamName = "Free Agency" });
+            teams.Insert(1, new Team { TeamName = "Free Agency" });
             cboPlayersTeam.DataSource = teams;
         }
 
@@ -36,7 +36,7 @@ namespace WeAreTheChampions
         {
             var teams = db.Teams.ToList().Where(x => !x.TeamName.Contains("(Closed)")).ToList();
             teams.Insert(0, new Team { TeamName = "All" });
-            teams.Add(new Team { TeamName = "Free Agency" });
+            teams.Insert(1, new Team { TeamName = "Free Agency" });
             cboTeams.DataSource = teams;
         }
 
@@ -45,6 +45,8 @@ namespace WeAreTheChampions
             if (teamId != 0)
             {
                 var team = db.Teams.ToList().Find(x => x.Id == teamId);
+                cboTeams.SelectedItem = team;
+                teamId = 0;
             }
             var selectedTeam = (Team)cboTeams.SelectedItem;
             var selectedTeamId = selectedTeam.Id;
@@ -52,7 +54,7 @@ namespace WeAreTheChampions
             {
                 lstPlayers.DataSource = db.Players.ToList();
             }
-            else if (cboTeams.SelectedIndex == cboTeams.Items.Count - 1)
+            else if (cboTeams.SelectedIndex == 1)
             {
                 var selectedTeamPlayers = db.Players.ToList().Where(x => x.TeamId == null);
                 lstPlayers.DataSource = selectedTeamPlayers.ToList();
@@ -71,27 +73,32 @@ namespace WeAreTheChampions
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var team = (Team)cboPlayersTeam.SelectedItem;
+            if (cboPlayersTeam.SelectedIndex == 0 || txtPlayerName.Text == "")
+            {
+                MessageBox.Show("Please fill all the blancks correctly");
+                return;
+            }
             if (btnAdd.Text == "💾 Save")
             {
-                var selectedplayer = (Player)lstPlayers.SelectedItem;
-                selectedplayer.PlayerName = txtPlayerName.Text;
-                selectedplayer.Team = cboPlayersTeam.SelectedIndex == cboPlayersTeam.Items.Count - 1 ? null : team;
+
+                var selectedPlayer = (Player)lstPlayers.SelectedItem;
+                selectedPlayer.PlayerName = txtPlayerName.Text.UppercaseFirst();
+
+                var teamEdit = (Team)cboPlayersTeam.SelectedItem;
+                selectedPlayer.Team = cboPlayersTeam.SelectedIndex == 1 ? null : teamEdit;
                 db.SaveChanges();
-                ListTeams();
+                ListPlayers();
                 ResetForm();
+                //WhenMakeChange(EventArgs.Empty);
                 return;
             }
-            string playerName = txtPlayerName.Text.Trim();
-            if (cboPlayersTeam.SelectedIndex == 0 || playerName == "")
-            {
-                return;
-            }
-            
+            string playerName = txtPlayerName.Text.UppercaseFirst().Trim();
+
+            var team = (Team)cboPlayersTeam.SelectedItem;
             db.Players.Add(new Player()
             {
                 PlayerName = playerName,
-                Team = cboPlayersTeam.SelectedIndex == cboPlayersTeam.Items.Count - 1 ? null : team
+                Team = cboPlayersTeam.SelectedIndex == 1 ? null : team
             });
             db.SaveChanges();
             ListPlayers();

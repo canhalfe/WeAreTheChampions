@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,11 +16,14 @@ namespace WeAreTheChampions
     public partial class Form1 : Form
     {
         WeAreTheChampionsContext db = new WeAreTheChampionsContext();
+
+        WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         public Form1()
         {
             InitializeComponent();
             ResultControl();
             ListMatches();
+            
         }
 
         private void ResultControl()
@@ -29,16 +33,16 @@ namespace WeAreTheChampions
             {
                 if (item.Score2 > item.Score1)
                     item.Result = Result.Team2;
-                
+
                 else if (item.Score1 > item.Score2)
                     item.Result = Result.Team1;
-                
+
                 else if (item.Score1 == item.Score2 && DateTime.Now > item.MatchTime)
                     item.Result = Result.Draw;
-                
+
                 else
                     item.Result = null;
-                
+
                 db.SaveChanges();
             }
         }
@@ -75,9 +79,9 @@ namespace WeAreTheChampions
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            
+
             int selectedIdMainForm = 0;
-            var frmAddMatchForm = new MatchDetailsForm(db,selectedIdMainForm);
+            var frmAddMatchForm = new MatchDetailsForm(db, selectedIdMainForm);
             frmAddMatchForm.HasBeenChanged += FrmAddMatchForm_HasBeenChanged;
             frmAddMatchForm.ShowDialog();
         }
@@ -100,7 +104,7 @@ namespace WeAreTheChampions
         private void btnEdit_Click(object sender, EventArgs e)
         {
             var selectedIdMainForm = (int)dgvMatches.SelectedRows[0].Cells[0].Value;
-            var frmAddMatchForm = new MatchDetailsForm(db,selectedIdMainForm);
+            var frmAddMatchForm = new MatchDetailsForm(db, selectedIdMainForm);
             frmAddMatchForm.HasBeenChanged += FrmAddMatchForm_HasBeenChanged;
             frmAddMatchForm.ShowDialog();
         }
@@ -115,7 +119,7 @@ namespace WeAreTheChampions
             var frmTeamsform = new frmTeamsForm(db);
             frmTeamsform.HasBeenChanged += FrmTeamsform_HasBeenChanged;
             frmTeamsform.ShowDialog();
-            
+
         }
 
         private void FrmTeamsform_HasBeenChanged(object sender, EventArgs e)
@@ -127,7 +131,7 @@ namespace WeAreTheChampions
         private void playersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var teamId = 0;
-            var frmPlayersForm = new PlayerForm(db,teamId);
+            var frmPlayersForm = new PlayerForm(db, teamId);
             frmPlayersForm.ShowDialog();
         }
 
@@ -136,5 +140,33 @@ namespace WeAreTheChampions
             var frmcolorsForm = new ColorsForm(db);
             frmcolorsForm.ShowDialog();
         }
+
+        #region Entry Music
+        private void playSimpleSound()
+        {
+            wplayer.URL = (@"C:\Users\deedr\OneDrive\Masaüstü\WeAreTheChampions\WeAreTheChampions\bin\Debug\UEFA Champions League 2018-19 Intro HD.mp3");
+            wplayer.controls.play();
+            wplayer.settings.setMode("loop", true);
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            playSimpleSound();
+        }
+
+        private void btnMusic_Click(object sender, EventArgs e)
+        {
+            wplayer.URL = (@"C:\Users\deedr\OneDrive\Masaüstü\WeAreTheChampions\WeAreTheChampions\bin\Debug\UEFA Champions League 2018-19 Intro HD.mp3");
+            wplayer.controls.stop();
+            btnMusic.Visible = false;
+            btnPlay.Visible = true;
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            playSimpleSound();
+            btnPlay.Visible = false;
+            btnMusic.Visible = true;
+        }
+        #endregion
     }
 }

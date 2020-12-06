@@ -78,6 +78,17 @@ namespace WeAreTheChampions
             var team2 = (Team)cboNewTeam2.SelectedItem;
             DateTime? matchDate = dtpNewDate.Value;
 
+            if (team1.Team1Matches.ToList().Any(x => x.MatchTime.Value.ToShortDateString() == matchDate.Value.ToShortDateString()) || team1.Team2Matches.ToList().Any(x => x.MatchTime.Value.ToShortDateString() == matchDate.Value.ToShortDateString()))
+            {
+                MessageBox.Show($"{team1} has already a match on this date!");
+                return;
+            }
+            if (team2.Team1Matches.ToList().Any(x => x.MatchTime.Value.ToShortDateString() == matchDate.Value.ToShortDateString()) || team2.Team2Matches.ToList().Any(x => x.MatchTime.Value.ToShortDateString() == matchDate.Value.ToShortDateString()))
+            {
+                MessageBox.Show($"{team2} has already a match on this date!");
+                return;
+            }
+
             db.Matches.Add(new Match()
             {
                 Team1 = team1,
@@ -121,9 +132,37 @@ namespace WeAreTheChampions
             var selectedMatch = FindSelectedMatch();
             cboEditTeam1.SelectedItem = selectedMatch.Team1;
             cboEditTeam2.SelectedItem = selectedMatch.Team2;
+
+            if (selectedMatch.MatchTime > DateTime.Now)
+            {
+                nudScore1.Enabled = false;
+                nudScore2.Enabled = false;
+            }
             nudScore1.Value = selectedMatch.Score1;
             nudScore2.Value = selectedMatch.Score2;
             dtpEditDate.Value = selectedMatch.MatchTime == null ? DateTime.Now : selectedMatch.MatchTime.Value;
+
+
+            var renkler = selectedMatch.Team1.TeamColors.ToList();
+            var renkler2 = selectedMatch.Team2.TeamColors.ToList();
+            if (renkler.Count == 0)
+                return;
+            else if (renkler.Count == 1)
+                lblTeam1C1.BackColor = System.Drawing.Color.FromArgb(renkler[0].Red, renkler[0].Green, renkler[0].Blue);
+            else if (renkler.Count == 2)
+            {
+                lblTeam1C1.BackColor = System.Drawing.Color.FromArgb(renkler[0].Red, renkler[0].Green, renkler[0].Blue);
+                lblTeam1C2.BackColor = System.Drawing.Color.FromArgb(renkler[1].Red, renkler[1].Green, renkler[1].Blue);
+            }
+            if (renkler2.Count == 0)
+                return;
+            else if (renkler2.Count == 1)
+                lblTeam2C1.BackColor = System.Drawing.Color.FromArgb(renkler2[0].Red, renkler2[0].Green, renkler2[0].Blue);
+            else if (renkler2.Count == 2)
+            {
+                lblTeam2C1.BackColor = System.Drawing.Color.FromArgb(renkler2[0].Red, renkler2[0].Green, renkler2[0].Blue);
+                lblTeam2C2.BackColor = System.Drawing.Color.FromArgb(renkler2[1].Red, renkler2[1].Green, renkler2[1].Blue);
+            }
         }
 
         private Match FindSelectedMatch()
@@ -150,9 +189,16 @@ namespace WeAreTheChampions
             var selectedMatch = FindSelectedMatch();
             selectedMatch.Team1 = (Team)cboEditTeam1.SelectedItem;
             selectedMatch.Team2 = (Team)cboEditTeam2.SelectedItem;
+
+            selectedMatch.MatchTime = dtpEditDate.Value;
+            if (selectedMatch.MatchTime > DateTime.Now)
+            {
+                nudScore1.Enabled = false;
+                nudScore2.Enabled = false;
+            }
+
             selectedMatch.Score1 = (int)nudScore1.Value;
             selectedMatch.Score2 = (int)nudScore2.Value;
-            selectedMatch.MatchTime = dtpEditDate.Value;
             db.SaveChanges();
             WhenMakeChange(EventArgs.Empty);
             MessageBox.Show("All changes has been saved");
@@ -162,6 +208,5 @@ namespace WeAreTheChampions
             }
             ListTeamsEditMatch();
         }
-
     }
 }
