@@ -56,7 +56,7 @@ namespace WeAreTheChampions
             this.dgvMatches.AllowUserToDeleteRows = false;
             this.dgvMatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMatches.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvMatches.BackgroundColor = System.Drawing.Color.ForestGreen;
+            this.dgvMatches.BackgroundColor = System.Drawing.Color.DarkGreen;
             this.dgvMatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatches.GridColor = System.Drawing.SystemColors.AppWorkspace;
             this.dgvMatches.Location = new System.Drawing.Point(147, 153);

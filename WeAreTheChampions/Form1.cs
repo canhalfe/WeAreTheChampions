@@ -144,7 +144,7 @@ namespace WeAreTheChampions
         #region Entry Music
         private void playSimpleSound()
         {
-            wplayer.URL = (@"C:\Users\deedr\OneDrive\Masaüstü\WeAreTheChampions\WeAreTheChampions\bin\Debug\UEFA Champions League 2018-19 Intro HD.mp3");
+            wplayer.URL = (@"UEFA Champions League 2018-19 Intro HD.mp3");
             wplayer.controls.play();
             wplayer.settings.setMode("loop", true);
         }
@@ -155,7 +155,7 @@ namespace WeAreTheChampions
 
         private void btnMusic_Click(object sender, EventArgs e)
         {
-            wplayer.URL = (@"C:\Users\deedr\OneDrive\Masaüstü\WeAreTheChampions\WeAreTheChampions\bin\Debug\UEFA Champions League 2018-19 Intro HD.mp3");
+            wplayer.URL = (@"UEFA Champions League 2018-19 Intro HD.mp3");
             wplayer.controls.stop();
             btnMusic.Visible = false;
             btnPlay.Visible = true;

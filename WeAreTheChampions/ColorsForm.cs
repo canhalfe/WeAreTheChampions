@@ -109,13 +109,6 @@ namespace WeAreTheChampions
                 Convert.ToByte(lblBlue.Text));
         }
         #endregion
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            lblColor.BackColor = System.Drawing.Color.FromArgb(
-                Convert.ToByte(lblRed.Text),
-                Convert.ToByte(lblGreen.Text),
-                Convert.ToByte(lblBlue.Text));
-        }
 
         private void lstColors_SelectedIndexChanged(object sender, EventArgs e)
         {
